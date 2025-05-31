@@ -207,6 +207,14 @@ public class Scene implements Iterable<IShape>
         }
     }
 
+    public void changeColor(Color color){
+        for(IShape s: shapeList){
+            if(s.isSelected()){
+                s.setColor(color);
+            }
+        }
+    }
+
     public Scene copy(){
         Scene copyScene = new Scene();
         for (IShape s : shapeList){
@@ -228,5 +236,16 @@ public class Scene implements Iterable<IShape>
                 s.expand(factor);
             }
         }
+    }
+
+    public List<IShape> getSelectedShapes() {
+        List<IShape> selectedShapes = new LinkedList<IShape>();
+        for (IShape s : shapeList) {
+            if (s.isSelected()) {
+                selectedShapes.add(s);
+            }
+        }
+        
+        return selectedShapes;
     }
 }

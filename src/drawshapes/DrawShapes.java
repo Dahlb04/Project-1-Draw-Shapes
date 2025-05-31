@@ -80,49 +80,61 @@ public class DrawShapes extends JFrame
             {
                 undoStack.add(scene.copy());
                 System.out.printf("Mouse cliked at (%d, %d)\n", e.getX(), e.getY());
-                
-                if (e.getButton()==MouseEvent.BUTTON1) { 
-                    if (shapeType == ShapeType.SQUARE) {
-                        scene.addShape(new Square(color, 
-                                e.getX(), 
-                                e.getY(),
-                                100));
-                    } else if (shapeType == ShapeType.CIRCLE){
-                        scene.addShape(new Circle(color,
-                                e.getPoint(),
-                                100));
-                    } else if (shapeType == ShapeType.RECTANGLE) {
-                        scene.addShape(new Rectangle(
-                                e.getPoint(),
-                                100, 
-                                200,
-                                color));
-                    } else if(shapeType==ShapeType.TRIANGLE){
-                        scene.addShape(new Triangle(
-                                color,
-                                e.getPoint(),
-                                100,
-                                100));
-                    }
-                    
-                } else if (e.getButton()==MouseEvent.BUTTON2) {
-                    // apparently this is middle click
-                } else if (e.getButton()==MouseEvent.BUTTON3){
-                    // right right-click
-                    Point p = e.getPoint();
-                    System.out.printf("Right click is (%d, %d)\n", p.x, p.y);
-                    List<IShape> selected = scene.select(p);
-                    if (selected.size() > 0){
-                        for (IShape s : selected){
-                            s.setSelected(true);
+                if(!e.isShiftDown()){
+                    if (e.getButton()==MouseEvent.BUTTON1) { 
+                        if (shapeType == ShapeType.SQUARE) {
+                            scene.addShape(new Square(color, 
+                                    e.getX(), 
+                                    e.getY(),
+                                    100));
+                        } else if (shapeType == ShapeType.CIRCLE){
+                            scene.addShape(new Circle(color,
+                                    e.getPoint(),
+                                    100));
+                        } else if (shapeType == ShapeType.RECTANGLE) {
+                            scene.addShape(new Rectangle(
+                                    e.getPoint(),
+                                    100, 
+                                    200,
+                                    color));
+                        } else if(shapeType==ShapeType.TRIANGLE){
+                            scene.addShape(new Triangle(
+                                    color,
+                                    e.getPoint(),
+                                    100,
+                                    100));
                         }
-                    } else {
-                        for (IShape s : scene){
-                            s.setSelected(false);
+
+                    } else if (e.getButton()==MouseEvent.BUTTON2) {
+                        // apparently this is middle click
+                    } else if (e.getButton()==MouseEvent.BUTTON3){
+                        // right right-click
+                        Point p = e.getPoint();
+                        System.out.printf("Right click is (%d, %d)\n", p.x, p.y);
+                        List<IShape> selected = scene.select(p);
+                        if (selected.size() > 0){
+                            for (IShape s : selected){
+                                s.setSelected(true);
+                            }
+                        } else {
+                            for (IShape s : scene){
+                                s.setSelected(false);
+                            }
                         }
+                        System.out.printf("Select %d shapes\n", selected.size());
                     }
-                    System.out.printf("Select %d shapes\n", selected.size());
-                }
+            }
+                if (e.getButton()==MouseEvent.BUTTON1) {
+                        if(e.isShiftDown()){
+                            System.out.println("Shift key is down");
+                            Point p = e.getPoint();
+                            List<IShape> selected = scene.select(p);
+                            for(IShape s: selected){
+                                s.setSelected(true);
+                            }
+                        }
+                        
+                    }
                 
             }
             
@@ -256,6 +268,10 @@ public class DrawShapes extends JFrame
                 System.out.println(text);
                 // change the color instance variable to red
                 color = Color.RED;
+                for(IShape s : scene.getSelectedShapes()){
+                    s.setColor(Color.RED);
+                }
+                repaint();
             }
         });
         
@@ -269,6 +285,10 @@ public class DrawShapes extends JFrame
                 System.out.println(text);
                 // change the color instance variable to blue
                 color = Color.BLUE;
+                for(IShape s : scene.getSelectedShapes()){
+                    s.setColor(Color.BLUE);
+                }
+                repaint();
             }
         });
 
@@ -280,6 +300,10 @@ public class DrawShapes extends JFrame
                 System.out.println(text);
                 // change the color instance variable to blue
                 color = Color.GREEN;
+                for(IShape s : scene.getSelectedShapes()){
+                    s.setColor(Color.GREEN);
+                }
+                repaint();
             }
         });
         
